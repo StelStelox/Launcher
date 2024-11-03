@@ -1,9 +1,23 @@
 import os from 'os';
+import Store from 'electron-store';
+import { app } from 'electron';
+import { parse } from 'path';
 
 import { SettingsFormat } from '../../common/types';
 import { StorageHelper } from './StorageHelper';
 
 export class SettingsHelper {
+    static store: any;
+
+    static init() {
+        this.store = new Store({
+            cwd: parse(app.getPath('exe')).dir,
+            defaults: {
+                client: this.defaultsValue(),
+            },
+        });
+    }
+
     static defaultsValue(): SettingsFormat {
         return {
             token: '0',
@@ -15,16 +29,20 @@ export class SettingsHelper {
         };
     }
 
+    static getStore() {
+        return this.store;
+    }
+
     static getAllFields(): SettingsFormat {
-        return StorageHelper.getStore().get('client');
+        return this.getStore().get('client');
     }
 
     static getField(name: string) {
-        return StorageHelper.getStore().get('client.' + name);
+        return this.getStore().get('client.' + name);
     }
 
     static setField(field: string, value: string | boolean | number): void {
-        return StorageHelper.getStore().set('client.' + field, value);
+        return this.getStore().set('client.' + field, value);
     }
 
     static getTotalMemory(): number {

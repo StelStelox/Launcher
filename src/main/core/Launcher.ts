@@ -10,6 +10,7 @@ import { ServersListScene } from '../scenes/ServersList';
 import { SettingsScene } from '../scenes/Settings';
 import { DiscordRPC } from './DiscordRPC';
 import { LauncherWindow } from './LauncherWindow';
+import { SettingsHelper } from '../helpers/SettingsHelper';
 
 @Service([
     LauncherWindow,
@@ -37,6 +38,7 @@ export class Launcher {
     }
 
     async init() {
+        SettingsHelper.init();
         StorageHelper.createMissing();
 
         await this.apiManager.initConnection();
