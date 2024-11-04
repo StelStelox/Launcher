@@ -236,7 +236,7 @@ export class Starter {
     }
 
     prepareNatives(nativesDir: string, libraries: ProfileLibrary[]) {
-        const nativesFiles: string[] = [];
+        const nativesFiles: { path: string; sha1: string }[] = [];
 
         libraries
             .filter(({ type }) => type === 'native')

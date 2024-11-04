@@ -9,8 +9,6 @@ import { StorageHelper } from '../../helpers/StorageHelper';
 import { IProcess } from './IProcess';
 import { WatcherProfile } from './WatcherProfile';
 
-// import pMap from 'p-map';
-
 interface WathedFile {
     path: string;
     sha1: string;
@@ -38,60 +36,53 @@ export class Watcher {
 
     async start(
         profile: WatcherProfile,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         libraries: ProfileLibrary[],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        natives: string[],
+        natives: { path: string; sha1: string }[],
         gameFiles: HashedFile[],
     ) {
+        this.#clientDir = join(StorageHelper.clientsDir, profile.clientDir);
         this.#filesList = gameFiles.map(({ path, sha1 }) => ({
             path: this.#normalizePath(path),
             sha1,
         }));
-        this.#clientDir = join(StorageHelper.clientsDir, profile.clientDir);
 
         this.#verifyList = profile.updateVerify.map((path) =>
-            join(this.#clientDir, path),
+            this.#normalizePath(join(this.#clientDir, path)),
         );
         this.#excludeList = profile.updateExclusions.map((path) =>
-            join(this.#clientDir, path),
+            this.#normalizePath(join(this.#clientDir, path)),
         );
 
-        // const libs = libraries
-        //     .filter((library) => library.type === 'library')
-        //     .map(({ path, sha1 }) => ({
-        //         path: join(StorageHelper.librariesDir, path),
-        //         sha1,
-        //     }));
-        // this.#filesList.push(...libs);
+        const libs = libraries
+            .filter((library) => library.type === 'library')
+            .map(({ path, sha1 }) => ({
+                path: this.#normalizePath(
+                    join(StorageHelper.librariesDir, path),
+                ),
+                sha1,
+            }));
+        this.#filesList.push(...libs);
+        libs.forEach(({ path }) => this.#verifyList.push(path));
 
-        // TODO natives
-        // const nativesDir = join(this.#clientDir, 'natives');
+        const nativesDir = join(this.#clientDir, 'natives');
+        const formattedNatives = natives.map(({ path, sha1 }) => ({
+            path: this.#normalizePath(join(nativesDir, path)),
+            sha1,
+        }));
 
-        // const nativesWithHash = await pMap(
-        //     natives,
-        //     async (native) => {
-        //         const path = join(nativesDir, native);
-        //         const sha1 = await HashHelper.getHashFromFile(path, 'sha1');
-        //         return { path, sha1 };
-        //     },
-        //     { concurrency: 4 },
-        // );
+        this.#filesList.push(...formattedNatives);
+        formattedNatives.forEach(({ path }) => this.#verifyList.push(path));
 
-        //
-
-        // const whitelistedFiles: WathedFile[] = [
-        //     ...profile.updateVerify.map((path) => join(this.#clientDir, path)),
-        // ];
-
-        // const updateExclusions = profile.updateExclusions.map((file) =>
-        //     join(this.#clientDir, file),
-        // );
-
-        this.#watcher = watch(this.#clientDir)
-            .on('add', (path) => this.#addEventChecker(path))
-            .on('change', (path) => this.#modifyEventChecker(path))
-            .on('unlink', (path) => this.#removeEventChecker(path));
+        this.#watcher = watch(this.#verifyList)
+            .on('add', (path) =>
+                this.#addEventChecker(this.#normalizePath(path)),
+            )
+            .on('change', (path) =>
+                this.#modifyEventChecker(this.#normalizePath(path)),
+            )
+            .on('unlink', (path) =>
+                this.#removeEventChecker(this.#normalizePath(path)),
+            );
     }
 
     stop() {
@@ -101,7 +92,6 @@ export class Watcher {
     }
 
     async #addEventChecker(path: string) {
-        path = this.#normalizePath(path);
         LogHelper.debug('[Watcher] File added: ' + path);
         if (
             this.#includeOrContains(this.#verifyList, path) &&
@@ -125,7 +115,6 @@ export class Watcher {
     }
 
     async #modifyEventChecker(path: string) {
-        path = this.#normalizePath(path);
         LogHelper.debug('[Watcher] File modified: ' + path);
         if (
             this.#includeOrContains(this.#verifyList, path) &&
@@ -149,7 +138,6 @@ export class Watcher {
     }
 
     #removeEventChecker(path: string) {
-        path = this.#normalizePath(path);
         LogHelper.debug('[Watcher] File removed: ' + path);
         if (
             this.#includeOrContains(this.#verifyList, path) &&

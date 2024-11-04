@@ -11,7 +11,7 @@
         "clean": "rimraf out dist",
         "prettier": "prettier --config .prettierrc.json --write src",
         "typecheck": "tsc --noEmit",
-        "lint": "eslint src --ext .ts,.tsx",
+        "lint": "eslint src",
         "lint:fix": "npm run lint -- --fix",
         "pack": "electron-builder --dir",
         "release": "esbuild ./upload-release.ts --bundle --log-level=error --loader:.pem=text --platform=node --packages=external --format=esm --outdir=./ --out-extension:.js=.mjs && node ./upload-release.mjs",
@@ -58,7 +58,7 @@
     },
     "dependencies": {
         "@aurora-launcher/api": "^0.4.0",
-        "@aurora-launcher/core": "^0.23.0",
+        "@aurora-launcher/core": "^0.24.0",
         "@freshgum/typedi": "^0.7.2",
         "@xhayper/discord-rpc": "^1.2.0",
         "bufferutil": "^4.0.8",
