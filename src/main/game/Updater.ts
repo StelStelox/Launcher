@@ -221,13 +221,13 @@ export class Updater {
         try {
             const fileHash = await HashHelper.getHashFromFile(filePath, 'sha1');
             if (fileHash === sha1) return;
-        } catch (error) {
+        } catch {
             // ignore not found file
         }
 
         try {
             await HttpHelper.downloadFile(fileUrl, filePath);
-        } catch (error) {
+        } catch {
             throw new Error(`file ${fileUrl} not found`);
         }
     }
@@ -244,7 +244,7 @@ export class Updater {
 
         try {
             await HttpHelper.downloadSafeFile(fileUrl, filePath);
-        } catch (error) {
+        } catch {
             throw new Error(`file ${fileUrl} not found`);
         }
     }
