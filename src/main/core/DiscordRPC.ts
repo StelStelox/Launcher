@@ -1,6 +1,6 @@
 import { discordRPC as config } from '@config';
 import { Service } from '@freshgum/typedi';
-import { Client } from '@xhayper/discord-rpc';
+import { Client } from '@kostya-main/discord-rpc';
 import { ipcMain } from 'electron';
 
 import { EVENTS } from '../../common/channels';
