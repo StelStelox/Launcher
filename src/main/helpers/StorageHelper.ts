@@ -33,6 +33,7 @@ export class StorageHelper {
             );
             this.clientsDir = resolve(SettingsHelper.getStore().get('client.dir'), 'clients');
             this.javaDir = resolve(SettingsHelper.getStore().get('client.dir'), 'java');
+            this.logFile = resolve(SettingsHelper.getStore().get('client.dir'), 'Launcher.log');
         } else {
             if (!existsSync(this.assetsDir)) mkdirSync(this.assetsDir);
             if (!existsSync(this.clientsDir)) mkdirSync(this.clientsDir);
@@ -55,6 +56,11 @@ export class StorageHelper {
         rmSync(this.librariesDir, { recursive: true });
         rmSync(this.javaDir, { recursive: true });
         this.storageDir = path;
+        this.assetsDir = resolve(this.storageDir, 'assets');
+        this.clientsDir = resolve(this.storageDir, 'clients');
+        this.librariesDir = resolve(this.storageDir, 'libraries');
+        this.javaDir = resolve(this.storageDir, 'java');
+        this.logFile = resolve(this.storageDir, 'Launcher.log');
 
         SettingsHelper.setField('dir', path);
         LogHelper.info('Migration completed successfully');
