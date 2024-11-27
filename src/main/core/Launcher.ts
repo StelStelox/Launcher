@@ -3,14 +3,12 @@ import { Service } from '@freshgum/typedi';
 import { APIManager } from '../api/APIManager';
 import { VerifyService } from '../api/VerifyService';
 import { LogHelper } from '../helpers/LogHelper';
-import { StorageHelper } from '../helpers/StorageHelper';
 import { LoginScene } from '../scenes/Login';
 import { ServerPanelScene } from '../scenes/ServerPanel';
 import { ServersListScene } from '../scenes/ServersList';
 import { SettingsScene } from '../scenes/Settings';
 import { DiscordRPC } from './DiscordRPC';
 import { LauncherWindow } from './LauncherWindow';
-import { SettingsHelper } from '../helpers/SettingsHelper';
 
 @Service([
     LauncherWindow,
@@ -38,9 +36,6 @@ export class Launcher {
     }
 
     async init() {
-        SettingsHelper.init();
-        StorageHelper.createMissing();
-
         await this.apiManager.initConnection();
 
         this.loginScene.initHandlers();

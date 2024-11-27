@@ -20,7 +20,6 @@ import { EVENTS } from '../../common/channels';
 import logo from '../../renderer/runtime/assets/images/logo.png?asset';
 import { PlatformHelper } from '../helpers/PlatformHelper';
 import { SettingsHelper } from '../helpers/SettingsHelper';
-import { StorageHelper } from '../helpers/StorageHelper';
 
 const isDev = process.env.DEV === 'true' && !app.isPackaged;
 
@@ -76,7 +75,7 @@ export class LauncherWindow {
             shell.openExternal(url),
         );
 
-        ipcMain.on(EVENTS.WINDOW.EDIT_DIR, () => {
+        ipcMain.on(EVENTS.WINDOW.EDIT_DIR, async () => {
             const dirPaths = dialog.showOpenDialogSync({
                 title: 'Укажите место хранения игры',
                 properties: ['openDirectory'],
@@ -85,7 +84,7 @@ export class LauncherWindow {
                 dirPaths &&
                 SettingsHelper.getField('dir') != dirPaths.toString()
             )
-                StorageHelper.migration(dirPaths.toString());
+                await SettingsHelper.migration(dirPaths.toString());
         });
 
         ipcMain.on(EVENTS.WINDOW.OPEN_DIR, (_, path: string) =>
