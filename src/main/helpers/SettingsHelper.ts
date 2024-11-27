@@ -11,7 +11,7 @@ export class SettingsHelper {
 
     static init() {
         this.store = new Store({
-            cwd: parse(app.getPath('exe')).dir,
+            cwd: parse(app.getPath('userData')).dir,
             defaults: {
                 client: this.defaultsValue(),
             },
