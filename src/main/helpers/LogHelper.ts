@@ -1,5 +1,6 @@
 import { createWriteStream } from 'fs';
 import { EOL } from 'os';
+import { join } from 'path';
 import { format } from 'util';
 
 import { StorageHelper } from './StorageHelper';
@@ -10,7 +11,7 @@ export class LogHelper {
         process.argv.includes('--debug') || process.argv.includes('--dev');
 
     private static readonly logFileStream = createWriteStream(
-        StorageHelper.logFile,
+        join(StorageHelper.storageDir, 'launcher.log'),
         { flags: 'a' },
     );
 

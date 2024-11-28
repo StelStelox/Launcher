@@ -1,26 +1,51 @@
 import os from 'os';
+import { join } from 'path';
+
 import Store from 'electron-store';
-import { app } from 'electron';
-import { parse } from 'path';
 
 import { SettingsFormat } from '../../common/types';
+import { LogHelper } from './LogHelper';
 import { StorageHelper } from './StorageHelper';
 
 export class SettingsHelper {
     static store: any;
 
-    static init() {
+    static {
         this.store = new Store({
-            cwd: parse(app.getPath('exe')).dir,
+            cwd: StorageHelper.storageDir,
             defaults: {
                 client: this.defaultsValue(),
             },
         });
+
+        const dir = this.store.get('client.dir');
+        if (dir && dir !== StorageHelper.storageDir) {
+            StorageHelper.storageDir = dir;
+            StorageHelper.resolveDirs();
+        }
+    }
+
+    static async migration(path: string) {
+        await StorageHelper.move(StorageHelper.assetsDir, join(path, 'assets'));
+        await StorageHelper.move(
+            StorageHelper.clientsDir,
+            join(path, 'clients'),
+        );
+        await StorageHelper.move(
+            StorageHelper.librariesDir,
+            join(path, 'libraries'),
+        );
+        await StorageHelper.move(StorageHelper.javaDir, join(path, 'java'));
+        StorageHelper.storageDir = path;
+        StorageHelper.resolveDirs();
+
+        this.setField('dir', path);
+        LogHelper.info('Migration completed successfully');
     }
 
     static defaultsValue(): SettingsFormat {
         return {
-            token: '0',
+            token: '',
             dir: StorageHelper.storageDir,
             autoConnect: false,
             fullScreen: false,
