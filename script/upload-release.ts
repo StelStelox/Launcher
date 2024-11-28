@@ -1,12 +1,10 @@
 import { request } from 'undici'
 import { parse } from 'yaml'
-import { api, window } from './config'
+import { api } from '../config'
 import { readFileSync, readdirSync } from 'fs'
 import { basename, join } from 'path'
 import { publicDecrypt, publicEncrypt } from 'crypto';
-import { build } from 'electron-builder';
 
-await buildBin()
 const regex = new RegExp(`latest(\\.|-mac\\.|-linux\\.)yml|zip$|dmg$|AppImage$|rpm$|deb$|exe$`);
 const dir = readdirSync('./dist').filter(file=>regex.exec(file))
 let globalToken:Buffer
@@ -97,55 +95,6 @@ async function authorization(){
   if (statusCode !== 200) throw new Error('An error occurred during authorization')
 }
 
-async function buildBin(){
-  await build({
-    config: {
-      appId: "ru.aurora.launcher",
-      productName: window.title,
-      electronLanguages: [
-          "en-US"
-      ],
-      publish: [
-          {
-              provider: "generic",
-              url: new URL ("/files/release", api.web).toString(),
-              channel: "latest"
-          }
-      ],
-      directories: {
-          buildResources: "resources"
-      },
-      files: [
-          "out/**/*",
-          "!out/main/index.js",
-          "!out/main/index-obf.js",
-          "!node_modules/**/*",
-          "node_modules/bytenode/**/*"
-      ],
-      nsis: {
-          artifactName: "${productName}-Setup-${version}.${ext}"
-      },
-      mac: {
-          category: "public.app-category.games"
-      },
-      linux: {
-          target: [
-              "deb",
-              "rpm",
-              "AppImage"
-          ],
-          category: "Game",
-          maintainer: "AuroraTeam <null@aurora-team.ru>"
-      }
-  }
-  })
-  .then((result) => {
-    console.log(JSON.stringify(result))
-  })
-  .catch((error) => {
-    console.error(error)
-  })
-}
 
 interface BodyAuthorization {
   token:string
