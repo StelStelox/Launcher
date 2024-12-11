@@ -17,6 +17,7 @@ import installExtension, {
 import { autoUpdater } from 'electron-updater';
 
 import { EVENTS } from '../../common/channels';
+import { window } from '@config';
 import logo from '../../renderer/runtime/assets/images/logo.png?asset';
 import { PlatformHelper } from '../helpers/PlatformHelper';
 import { SettingsHelper } from '../helpers/SettingsHelper';
@@ -98,7 +99,7 @@ export class LauncherWindow {
     private createMainWindow(): BrowserWindow {
         // creating and configuring a tray
         const tray = new Tray(logo);
-
+        tray.setToolTip(`${window.title}`);
         tray.setContextMenu(
             Menu.buildFromTemplate([
                 {

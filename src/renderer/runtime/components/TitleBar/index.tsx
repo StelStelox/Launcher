@@ -36,7 +36,7 @@ export default function TitleBar() {
         deleteUserData();
         hideTitlebarSettingsBtn();
         setTitlebarUserText("");
-        launcherAPI.scenes.settings.setField('token', "0");
+        launcherAPI.scenes.settings.setField('token', "");
         navigate('/');
     }
     function toSettings() {
