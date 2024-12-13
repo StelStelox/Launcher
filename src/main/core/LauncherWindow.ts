@@ -67,7 +67,9 @@ export class LauncherWindow {
         });
 
         ipcMain.on(EVENTS.WINDOW.TITLE, (_, title: string) => {
-            this.mainWindow?.setTitle(title);
+            if (this.mainWindow && title) {
+                this.mainWindow.setTitle(title);
+            }
         });
 
         // hide the main window when the minimize button is pressed
