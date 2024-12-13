@@ -66,6 +66,10 @@ export class LauncherWindow {
             if (!PlatformHelper.isMac) app.quit();
         });
 
+        ipcMain.on(EVENTS.WINDOW.TITLE, (_, title: string) => {
+            this.mainWindow?.setTitle(title);
+        });
+
         // hide the main window when the minimize button is pressed
         ipcMain.on(EVENTS.WINDOW.HIDE, () => this.mainWindow?.minimize());
 

@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-
 import If from '../If';
 import classes from './index.module.sass';
+import { useEffect } from 'react';
 import {
     titlebarBackBtn,
     titlebarLogout,
@@ -22,6 +22,11 @@ export default function TitleBar() {
     const navigate = useNavigate();
     const username = useRecoilValue(titlebarUser);
     const { setTitlebarUserText, hideTitlebarSettingsBtn } = useTitlebar();
+    useEffect(() => {
+        if (title?.text) {
+            launcherAPI.window.title(title.text);
+        }
+    }, [title.text]);
 
     function hide() {
         launcherAPI.window.hide();
