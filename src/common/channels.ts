@@ -1,6 +1,6 @@
 export const EVENTS = {
     WINDOW: {
-        TITLE: 'window:title',
+        SET_TITLE: 'window:setTitle',
         HIDE: 'window:hide',
         CLOSE: 'window:close',
         OPEN_EXTERNAL: 'window:openExternal',

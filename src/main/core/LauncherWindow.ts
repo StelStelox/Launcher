@@ -66,7 +66,7 @@ export class LauncherWindow {
             if (!PlatformHelper.isMac) app.quit();
         });
 
-        ipcMain.on(EVENTS.WINDOW.TITLE, (_, title: string) => {
+        ipcMain.on(EVENTS.WINDOW.SET_TITLE, (_, title: string) => {
             if (this.mainWindow && title) {
                 this.mainWindow.setTitle(title);
             }

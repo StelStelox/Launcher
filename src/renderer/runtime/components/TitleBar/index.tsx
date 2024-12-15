@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import If from '../If';
-import { window } from '@config';
 import classes from './index.module.sass';
 import { useEffect } from 'react';
 import {
@@ -25,8 +24,7 @@ export default function TitleBar() {
     const { setTitlebarUserText, hideTitlebarSettingsBtn } = useTitlebar();
     useEffect(() => {
         if (title?.text) {
-            window.title = title.text;
-            launcherAPI.window.title();
+            launcherAPI.window.setTitle(title.text);
         }
     }, [title.text]);
 

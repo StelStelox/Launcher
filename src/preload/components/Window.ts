@@ -1,5 +1,4 @@
 import { ipcRenderer } from 'electron';
-import { window } from '../../../config';
 import { EVENTS } from '../../common/channels';
 
 export default class Window {
@@ -7,8 +6,8 @@ export default class Window {
     /**
      * Set title from window
      */
-    static title(){
-        ipcRenderer.send(EVENTS.WINDOW.TITLE, window.title);
+    static setTitle(title: string) {
+        ipcRenderer.send(EVENTS.WINDOW.SET_TITLE, title);
     }
     /**
      * Hide window
