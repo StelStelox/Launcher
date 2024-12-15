@@ -148,7 +148,7 @@ export default function Settings() {
             <If state={info}>
                 <div className={classes.options}>
                     <div className={classes.logo}>
-                        <img src={logo} alt="Aurora Launcher" />
+                        <img src={logo} alt={window.title} />
                     </div>
                     <div className={classes.launcherName}>
                         <center>

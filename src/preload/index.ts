@@ -10,11 +10,12 @@ import RPC from './components/RPC'
 // export для типизации
 export const API = {
     window: {
+        setTitle: Window.setTitle,
         hide: Window.hide,
         close: Window.close,
         openExternal: Window.openExternal,
-        editDir:Window.editDir,
-        openDir:Window.openDir,
+        editDir: Window.editDir,
+        openDir: Window.openDir,
     },
     rpc: {
         updateActivity: RPC.updateActivity,

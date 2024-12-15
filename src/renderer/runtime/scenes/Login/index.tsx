@@ -25,7 +25,7 @@ export default function Login() {
         launcherAPI.scenes.settings
             .getAllFields()
             .then((res) => {
-                if (res.token!="0") launcherAPI.scenes.login.authToken().then((userData) => {
+                if (res.token!="") launcherAPI.scenes.login.authToken().then((userData) => {
                     setUserData(userData);
                     setTitlebarUserText(userData.username);
                     showTitlebarSettingsBtn();
