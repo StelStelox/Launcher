@@ -133,6 +133,7 @@ export class LauncherWindow {
             title: windowConfig.title || 'Aurora Launcher',
             icon: logo,
             webPreferences: {
+                webSecurity: false, // disable cors check
                 preload: join(__dirname, '../preload/index.js'),
                 devTools: isDev,
             },
