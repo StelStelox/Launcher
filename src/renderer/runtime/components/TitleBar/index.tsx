@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import If from '../If';
 import classes from './index.module.sass';
 import { useEffect } from 'react';
@@ -15,12 +15,12 @@ import { deleteUserData } from '../../../utils';
 import { useTitlebar } from './hooks';
 
 export default function TitleBar() {
-    const backBtn = useRecoilValue(titlebarBackBtn);
-    const logoutBtn = useRecoilValue(titlebarLogout);
-    const title = useRecoilValue(titlebarTitle);
-    const settings = useRecoilValue(titlebarSettingsBtn);
+    const backBtn = useAtomValue(titlebarBackBtn);
+    const logoutBtn = useAtomValue(titlebarLogout);
+    const title = useAtomValue(titlebarTitle);
+    const settings = useAtomValue(titlebarSettingsBtn);
     const navigate = useNavigate();
-    const username = useRecoilValue(titlebarUser);
+    const username = useAtomValue(titlebarUser);
     const { setTitlebarUserText, hideTitlebarSettingsBtn } = useTitlebar();
     useEffect(() => {
         if (title?.text) {

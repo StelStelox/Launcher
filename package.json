@@ -66,11 +66,11 @@
         "chokidar": "^4.0.1",
         "electron-store": "^10.0.0",
         "electron-updater": "^6.3.9",
+        "jotai": "^2.11.0",
         "minestat-es": "^2.2.4",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-router-dom": "^6.28.0",
-        "recoil": "^0.7.7",
         "semver": "^7.6.3",
         "skinview3d": "^3.1.0"
     },
