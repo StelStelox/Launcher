@@ -65,16 +65,20 @@ async function checkVersion():Promise<boolean> {
   )
 
   console.log('response received', statusCode)
-  const file:YamlFile = parse(await body.text())
-  const localFile:YamlFile = parse(readFileSync(join('./dist', confignameYml)).toString('utf-8'))
-  
-  if (file.version == localFile.version) {
-    console.info('The versions are identical. Upload canceled')
-    return false
-  }
-  else {
-    console.info('Version change found. Uploading a new one')
-    return true
+  if (statusCode == 200 || statusCode == 404) {
+    const file:YamlFile = parse(await body.text())
+    const localFile:YamlFile = parse(readFileSync(join('./dist', confignameYml)).toString('utf-8'))
+    if (file.version == localFile.version) {
+      console.info('The versions are identical. Upload canceled')
+      return false
+    }
+    else {
+      console.info('Version change found. Uploading a new one')
+      return true
+    }
+  } else {
+    console.log('data', await body.text())
+    throw new Error('An error occurred during check version')
   }
 }
 
@@ -90,9 +94,13 @@ async function authorization(){
   )
 
   console.log('response received', statusCode)
+  if (statusCode !== 200) throw new Error('It seems you are using the wrong version of LauncherServer. Please update to 0.0.5')
   const token = await body.json() as BodyAuthorization
-  globalToken = publicDecrypt(api.publicKey, Buffer.from(token.token, 'hex'),)
-  if (statusCode !== 200) throw new Error('An error occurred during authorization')
+  try {
+    globalToken = publicDecrypt(api.publicKey, Buffer.from(token.token, 'hex'))
+  } catch {
+    throw new Error('Invalid public.pem')
+  }
 }
 
 
