@@ -136,7 +136,7 @@ export default function ServerPanel() {
 }
 
 function bytesToSize(bytes: number): string {
-    const sizes = ['Bytes', 'KB', 'MB'];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     if (bytes === 0) return 'n/a';
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     if (i === 0) return `${bytes} ${sizes[i]}`;
