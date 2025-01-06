@@ -1,8 +1,8 @@
 import { existsSync } from 'fs';
-import { chmod, readdir } from 'fs/promises';
+import { chmod, readdir, rm } from 'fs/promises';
 import { join } from 'path';
 
-import { HttpHelper, ZipHelper } from '@aurora-launcher/core';
+import { HashHelper, HttpHelper, ZipHelper } from '@aurora-launcher/core';
 import { Service } from '@freshgum/typedi';
 
 import { Architecture, Platform } from '../core/System';
@@ -17,10 +17,10 @@ export class JavaManager {
         if (existsSync(javaDir)) return true;
 
         const javaLink =
-            'https://api.azul.com/metadata/v1/zulu/packages/?java_version={version}&os={os}&arch={arch}&archive_type=zip&java_package_type=jre&javafx_bundled=false&latest=true&release_status=ga&availability_types=CA&certifications=tck&page=1&page_size=1';
+            'https://api.azul.com/metadata/v1/zulu/packages/?java_version={version}&os={os}&arch={arch}&archive_type=zip&java_package_type=jre&javafx_bundled=false&latest=true&release_status=ga&page=1&page_size=1';
 
         gameWindow.sendToConsole('Download Java');
-        const javaData: JavaData[] = await HttpHelper.getResourceFromJson(
+        const javaData = await HttpHelper.getResourceFromJson<JavaData[]>(
             javaLink
                 .replace('{version}', majorVersion.toString())
                 .replace('{os}', this.#getOs())
@@ -40,6 +40,22 @@ export class JavaManager {
                 },
             },
         );
+        gameWindow.sendToConsole('Validate Java');
+
+        const detailsLink =
+            'https://api.azul.com/metadata/v1/zulu/packages/{guid}';
+        const detailsData = await HttpHelper.getResourceFromJson<JavaDetails>(
+            detailsLink.replace('{guid}', javaData[0].package_uuid),
+        );
+
+        if (
+            !HashHelper.compareFileHash(javaFile, 'md5', detailsData.md5_hash)
+        ) {
+            rm(javaFile);
+            rm(javaDir);
+            throw new Error('Java validation failed');
+        }
+
         gameWindow.sendToConsole('Unpacking Java');
         ZipHelper.unzip(javaFile, javaDir);
         if (PlatformHelper.isLinux || PlatformHelper.isMac) {
@@ -98,12 +114,9 @@ enum JavaArchitecture {
 
 interface JavaData {
     package_uuid: string;
-    name: string;
-    java_version: Array<number>;
-    openjdk_build_number: number;
-    latest: boolean;
     download_url: URL;
-    product: string;
-    availability_type: string;
-    distro_version: Array<number>;
+}
+
+interface JavaDetails {
+    md5_hash: string;
 }

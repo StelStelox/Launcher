@@ -59,7 +59,7 @@
     },
     "dependencies": {
         "@aurora-launcher/api": "^0.4.0",
-        "@aurora-launcher/core": "^0.24.0",
+        "@aurora-launcher/core": "^0.25.0",
         "@freshgum/typedi": "^0.7.2",
         "@kostya-main/discord-rpc": "^1.2.1",
         "bytenode": "^1.5.6",
