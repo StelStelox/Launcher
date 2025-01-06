@@ -42,11 +42,13 @@ export class AuthlibInjector {
             return;
         }
 
-        const fileHash = await HashHelper.getHashFromFile(
-            this.authlibFilePath,
-            'sha256',
-        );
-        if (fileHash !== authlibData.checksums.sha256) {
+        if (
+            !HashHelper.compareFileHash(
+                this.authlibFilePath,
+                'sha256',
+                authlibData.checksums.sha256,
+            )
+        ) {
             LogHelper.error('Authlib checksum mismatch');
             return;
         }

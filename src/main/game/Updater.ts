@@ -219,8 +219,9 @@ export class Updater {
         const fileUrl = this.getFileUrl(path, type);
 
         try {
-            const fileHash = await HashHelper.getHashFromFile(filePath, 'sha1');
-            if (fileHash === sha1) return;
+            if (await HashHelper.compareFileHash(filePath, 'sha1', sha1)) {
+                return;
+            }
         } catch {
             // ignore not found file
         }

@@ -103,7 +103,7 @@ export class Watcher {
 
             if (
                 !hash ||
-                (await HashHelper.getHashFromFile(path, 'sha1')) !== hash
+                !(await HashHelper.compareFileHash(path, 'sha1', hash))
             ) {
                 LogHelper.error(
                     '[Watcher] File tampering detected',
@@ -126,7 +126,7 @@ export class Watcher {
 
             if (
                 !hash ||
-                (await HashHelper.getHashFromFile(path, 'sha1')) !== hash
+                !(await HashHelper.compareFileHash(path, 'sha1', hash))
             ) {
                 LogHelper.error(
                     '[Watcher] File tampering detected',
