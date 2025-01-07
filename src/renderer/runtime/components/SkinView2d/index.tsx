@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import defaultSkin from '../../assets/images/steve.png';
 import { SkinViewer2D } from '../../libs/skinview2d/viewer';
@@ -11,7 +11,7 @@ export const SkinView2d = ({
     width = 64,
     height = 64,
 }: SkinView2dProps) => {
-    const skinHeadRef = useRef() as MutableRefObject<HTMLDivElement>;
+    const skinHeadRef = useRef<HTMLDivElement>(null);
 
 		const { skinUrl } = getUserData();
 

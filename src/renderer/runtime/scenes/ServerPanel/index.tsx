@@ -1,5 +1,5 @@
 import { Server } from '@aurora-launcher/core';
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { LoadProgress } from '../../../../common/types';
 import If from '../../components/If';
@@ -17,9 +17,9 @@ export default function ServerPanel() {
     const [showProgress, setShowProgress] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
 
-    const consoleRef = useRef() as MutableRefObject<HTMLPreElement>;
-    const progressLine = useRef() as MutableRefObject<HTMLDivElement>;
-    const progressInfo = useRef() as MutableRefObject<HTMLDivElement>;
+    const consoleRef = useRef<HTMLPreElement>(null);
+    const progressLine = useRef<HTMLDivElement>(null);
+    const progressInfo = useRef<HTMLDivElement>(null);
     const [settings, setSettings] = useState<SettingsFormat>({});
 
     const { showTitlebarBackBtn, hideTitlebarBackBtn, 

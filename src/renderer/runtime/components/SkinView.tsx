@@ -1,11 +1,11 @@
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { IdleAnimation, SkinViewer } from 'skinview3d';
 import { getUserData } from '../../utils';
 
 import defaultSkin from '../assets/images/steve.png';
 
 export default function SkinView() {
-    const skinCanvas = useRef() as MutableRefObject<HTMLCanvasElement>;
+    const skinCanvas = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
         const skinViewer = new SkinViewer({
