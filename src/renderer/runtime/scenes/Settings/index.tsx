@@ -1,7 +1,7 @@
+import { window } from '@config';
 import { useEffect, useState } from 'react';
 
 import { version } from '../../../../../package.json';
-import { window } from '@config';
 import { SettingsFormat } from '../../../../common/types';
 import logo from '../../assets/images/logo.png';
 import If from '../../components/If';
@@ -25,9 +25,7 @@ export default function Settings() {
 
         launcherAPI.scenes.settings
             .getAllFields()
-            .then((res) => {
-                setSettings(res);
-            });
+            .then((res) => setSettings(res));
         launcherAPI.scenes.settings
             .getTotalMemory()
             .then((res) => SetTotalMemory(res));
@@ -64,10 +62,16 @@ export default function Settings() {
         <div className={classes.window}>
             <div className={classes.buttonsList}>
                 <div className={classes.buttons}>
-                    <button onClick={() => Button('main')} disabled={main}>
+                    <button
+                        onClick={() => Button('main')}
+                        className={main ? classes.active : ''}
+                    >
                         Основное
                     </button>
-                    <button onClick={() => Button('info')} disabled={info}>
+                    <button
+                        onClick={() => Button('info')}
+                        className={info ? classes.active : ''}
+                    >
                         О лаунчере
                     </button>
                 </div>
@@ -107,7 +111,10 @@ export default function Settings() {
                             type="checkbox"
                             checked={settings.autoConnect}
                             onChange={(e) =>
-                                setValue('autoConnect', Boolean(e.target.checked))
+                                setValue(
+                                    'autoConnect',
+                                    Boolean(e.target.checked),
+                                )
                             }
                         />
                         <span className={classes.checkboxSwitch}></span>
@@ -124,22 +131,29 @@ export default function Settings() {
                         }
                         value={settings.memory}
                     />
-                    <label>
-                    Расположение игры
-                    </label>
+                    <label>Расположение игры</label>
                     <br />
                     <div className={classes.changeDir}>
-                        <button className={classes.openDir} onClick={() => launcherAPI.window.openDir(settings.dir)}>
-                        {settings.dir}
+                        <button
+                            className={classes.openDir}
+                            onClick={() => {
+                                if (!settings.dir) return;
+                                launcherAPI.window.openDir(settings.dir);
+                            }}
+                        >
+                            {settings.dir}
                         </button>
-                        <button className={classes.editDir} onClick={() => {
-                            launcherAPI.window.editDir();
-                            launcherAPI.scenes.settings
-                            .getAllFields()
-                            .then((res) => {
-                                setSettings(res);
-                            });
-                        }}>
+                        <button
+                            className={classes.editDir}
+                            onClick={() => {
+                                launcherAPI.window.editDir();
+                                launcherAPI.scenes.settings
+                                    .getAllFields()
+                                    .then((res) => {
+                                        setSettings(res);
+                                    });
+                            }}
+                        >
                             Смена директории
                         </button>
                     </div>
