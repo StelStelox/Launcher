@@ -153,6 +153,7 @@ export class LauncherWindow {
 
         mainWindow.on('closed', () => {
             this.mainWindow = undefined;
+            tray.destroy();
         });
 
         /**
