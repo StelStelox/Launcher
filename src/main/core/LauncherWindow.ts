@@ -10,6 +10,7 @@ import {
     app,
     dialog,
     ipcMain,
+    nativeImage,
     shell,
 } from 'electron';
 import installExtension, {
@@ -17,7 +18,7 @@ import installExtension, {
 } from 'electron-extension-installer';
 import { autoUpdater } from 'electron-updater';
 
-import icon from '../../../resources/icon.ico?asset';
+import icon from '../../../resources/icon.png?asset';
 import { EVENTS } from '../../common/channels';
 import { PlatformHelper } from '../helpers/PlatformHelper';
 import { SettingsHelper } from '../helpers/SettingsHelper';
@@ -103,8 +104,9 @@ export class LauncherWindow {
      * Create launcher window
      */
     private createMainWindow(): BrowserWindow {
+        const iconImage = nativeImage.createFromPath(icon);
         // creating and configuring a tray
-        const tray = new Tray(icon);
+        const tray = new Tray(iconImage.resize({ width: 16, height: 16 }));
         tray.setToolTip(`${window.title}`);
         tray.setContextMenu(
             Menu.buildFromTemplate([
@@ -131,7 +133,7 @@ export class LauncherWindow {
             maximizable: windowConfig.maximizable || false,
             fullscreenable: windowConfig.fullscreenable || false,
             title: windowConfig.title || 'Aurora Launcher',
-            icon: icon,
+            icon: iconImage,
             webPreferences: {
                 webSecurity: false, // disable cors check
                 preload: join(__dirname, '../preload/index.js'),
