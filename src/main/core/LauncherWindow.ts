@@ -1,6 +1,7 @@
 import { join } from 'path';
 
 import { window as windowConfig } from '@config';
+import { window } from '@config';
 import { Service } from '@freshgum/typedi';
 import {
     BrowserWindow,
@@ -16,9 +17,8 @@ import installExtension, {
 } from 'electron-extension-installer';
 import { autoUpdater } from 'electron-updater';
 
+import icon from '../../../resources/icon.ico?asset';
 import { EVENTS } from '../../common/channels';
-import { window } from '@config';
-import logo from '../../renderer/runtime/assets/images/logo.png?asset';
 import { PlatformHelper } from '../helpers/PlatformHelper';
 import { SettingsHelper } from '../helpers/SettingsHelper';
 
@@ -104,7 +104,7 @@ export class LauncherWindow {
      */
     private createMainWindow(): BrowserWindow {
         // creating and configuring a tray
-        const tray = new Tray(logo);
+        const tray = new Tray(icon);
         tray.setToolTip(`${window.title}`);
         tray.setContextMenu(
             Menu.buildFromTemplate([
@@ -131,7 +131,7 @@ export class LauncherWindow {
             maximizable: windowConfig.maximizable || false,
             fullscreenable: windowConfig.fullscreenable || false,
             title: windowConfig.title || 'Aurora Launcher',
-            icon: logo,
+            icon: icon,
             webPreferences: {
                 webSecurity: false, // disable cors check
                 preload: join(__dirname, '../preload/index.js'),
