@@ -18,8 +18,8 @@ import installExtension, {
 } from 'electron-extension-installer';
 import { autoUpdater } from 'electron-updater';
 
-import icon from '../../../resources/icon.png?asset';
 import { EVENTS } from '../../common/channels';
+import icon from '../../renderer/runtime/assets/images/icon.png?asset';
 import { PlatformHelper } from '../helpers/PlatformHelper';
 import { SettingsHelper } from '../helpers/SettingsHelper';
 
