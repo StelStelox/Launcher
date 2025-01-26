@@ -2,11 +2,11 @@ import { Server } from '@aurora-launcher/core';
 import { useEffect, useRef, useState } from 'react';
 
 import { LoadProgress } from '../../../../common/types';
+import { SettingsFormat } from '../../../../common/types';
 import If from '../../components/If';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import { usePingServer } from '../../hooks/pingServer';
 import classes from './index.module.sass';
-import { SettingsFormat } from '../../../../common/types';
 
 // TODO Refactoring scene
 export default function ServerPanel() {
@@ -22,9 +22,14 @@ export default function ServerPanel() {
     const progressInfo = useRef<HTMLDivElement>(null);
     const [settings, setSettings] = useState<SettingsFormat>({});
 
-    const { showTitlebarBackBtn, hideTitlebarBackBtn, 
-        hideTitlebarSettingsBtn, showTitlebarSettingsBtn, 
-        resetTitlebarTitleText, hideTitlebarLogoutBtn } = useTitlebar();
+    const {
+        showTitlebarBackBtn,
+        hideTitlebarBackBtn,
+        hideTitlebarSettingsBtn,
+        showTitlebarSettingsBtn,
+        resetTitlebarTitleText,
+        hideTitlebarLogoutBtn,
+    } = useTitlebar();
 
     useEffect(() => {
         launcherAPI.scenes.serverPanel.getServer().then(setSelectedServer);
@@ -34,9 +39,7 @@ export default function ServerPanel() {
         resetTitlebarTitleText();
         launcherAPI.scenes.settings
             .getAllFields()
-            .then((res) => {
-                setSettings(res);
-            });
+            .then((res) => setSettings(res));
         launcherAPI.rpc.updateActivity('profile');
     }, []);
 

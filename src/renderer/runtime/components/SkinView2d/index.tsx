@@ -1,33 +1,31 @@
 import { useEffect, useRef } from 'react';
 
+import { getUserData } from '../../../utils';
 import defaultSkin from '../../assets/images/steve.png';
 import { SkinViewer2D } from '../../libs/skinview2d/viewer';
-import { getUserData } from '../../../utils';
+
 interface SkinView2dProps {
     width: number;
     height: number;
 }
-export const SkinView2d = ({
-    width = 64,
-    height = 64,
-}: SkinView2dProps) => {
+export const SkinView2d = ({ width = 64, height = 64 }: SkinView2dProps) => {
     const skinHeadRef = useRef<HTMLDivElement>(null);
 
-		const { skinUrl } = getUserData();
+    const { skinUrl } = getUserData();
 
     useEffect(() => {
         renderSkinViewer();
     }, [width, height]);
 
     const renderSkinViewer = () => {
-			new SkinViewer2D({
+        if (!skinHeadRef.current) return;
+        new SkinViewer2D({
             domElement: skinHeadRef.current,
             skinUrl: skinUrl ?? defaultSkin,
             width: width,
             height: height,
         });
     };
-
 
     return (
         <div

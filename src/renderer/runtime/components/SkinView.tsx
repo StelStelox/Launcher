@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { IdleAnimation, SkinViewer } from 'skinview3d';
-import { getUserData } from '../../utils';
 
+import { getUserData } from '../../utils';
 import defaultSkin from '../assets/images/steve.png';
 
 export default function SkinView() {
     const skinCanvas = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
+        if (!skinCanvas.current) return;
         const skinViewer = new SkinViewer({
             canvas: skinCanvas.current,
             width: 220,
@@ -18,7 +19,6 @@ export default function SkinView() {
         skinViewer.camera.position.y = 20;
         skinViewer.zoom = 0.8;
         skinViewer.controls.enableZoom = false;
-    
 
         skinViewer.animation = new IdleAnimation();
 
