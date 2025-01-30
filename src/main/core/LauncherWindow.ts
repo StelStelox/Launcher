@@ -141,6 +141,11 @@ export class LauncherWindow {
             },
         });
 
+        // https://github.com/electron/electron/issues/1594#issuecomment-419741626
+        mainWindow.on('page-title-updated', (evt) => {
+            evt.preventDefault();
+        });
+
         mainWindow.webContents.setWindowOpenHandler((data) => {
             shell.openExternal(data.url);
             return { action: 'deny' };
