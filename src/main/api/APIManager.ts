@@ -24,6 +24,10 @@ export class APIManager {
         this.#onConnectListeners.push(listener);
     }
 
+    public getAPIEndpoint() {
+        return this.api.getEndpoint();
+    }
+
     public auth(login: string, password: string) {
         return this.api.auth(login, password);
     }

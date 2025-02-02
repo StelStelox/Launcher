@@ -1,6 +1,6 @@
 import { AuthResponseData } from '@aurora-launcher/core';
 
-export type UserData = Omit<Session, 'accessToken'>;
+export type UserData = Omit<Session, 'accessToken' | 'refreshToken'>;
 
 export type Session = AuthResponseData;
 

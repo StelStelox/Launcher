@@ -104,7 +104,7 @@ export class Starter {
         const jvmArgs = [];
 
         jvmArgs.push(
-            `-javaagent:${this.authlibInjector.authlibFilePath}=${apiConfig.web}`,
+            `-javaagent:${this.authlibInjector.authlibFilePath}=${this.authorizationService.getAPIEndpoint() || apiConfig.web}`,
         );
         jvmArgs.push(`-Xmx` + settings.memory + `M`);
 
