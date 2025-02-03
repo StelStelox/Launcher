@@ -68,6 +68,7 @@
         "electron-updater": "^6.3.9",
         "jotai": "^2.11.0",
         "minestat-es": "^2.2.5",
+        "node-stream-zip": "^1.15.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-router-dom": "^7.1.1",

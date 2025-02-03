@@ -240,13 +240,13 @@ export class Starter {
 
         libraries
             .filter(({ type }) => type === 'native')
-            .forEach(({ path }) => {
+            .forEach(async ({ path }) => {
                 try {
                     nativesFiles.push(
-                        ...ZipHelper.unzip(
+                        ...await ZipHelper.unzip(
                             join(StorageHelper.librariesDir, path),
                             nativesDir,
-                            ['.so', '.dylib', '.jnilib', '.dll'],
+                            ['.so', '.dylib', '.jnilib', '.dll']
                         ),
                     );
                 } catch (error) {

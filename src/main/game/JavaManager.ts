@@ -57,7 +57,17 @@ export class JavaManager {
         }
 
         gameWindow.sendToConsole('Unpacking Java');
-        ZipHelper.unzip(javaFile, javaDir);
+        const extractFile = await ZipHelper.unzip(javaFile, javaDir);
+        // Проверка хешей в архиве и на диске (проверить её надобность)
+        for (const file of extractFile) {
+            if (
+                !HashHelper.compareFileHash(join(javaDir, file.path), 'sha1', file.sha1)
+            ) {
+                rm(javaFile);
+                rm(javaDir);
+                throw new Error('Java validation failed');
+            }
+        }
         if (PlatformHelper.isLinux || PlatformHelper.isMac) {
             await chmod(await this.getJavaPath(majorVersion), 744);
         }
